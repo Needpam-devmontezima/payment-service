@@ -1,0 +1,20 @@
+services:
+  payment-service:
+    image: payment-service:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=paymentdb.c5uem4s60ypi.us-east-2.rds.amazonaws.com
+      - DB_PORT=5432
+      - DB_NAME=postgres
+      - DB_USER=payment_user
+      - DB_PASSWORD=devpassword
+      - SSL_MODE=require
+      - STRIPE_SECRET_KEY=sk_test_51RZtEhIohedrUkIbbyyDwDxwpnZaJa9gSx6Hl8agB1i6uYCuKCG0yKEhBQhtZJJbilsCYs5cisMWK5nDAmvSK5lq00XE29OOKY
+      - STRIPE_WEBHOOK_SECRET=whsec_15710f1efb37f1e091d69977e3e799017e2132e6736a1da205b4183a74f75781
+    networks:
+      - payment-network
+
+networks:
+  payment-network:
+    driver: bridge

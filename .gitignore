@@ -1,0 +1,75 @@
+# Binaries and compiled files
+/bin/
+/main
+*.exe
+*.so
+*.dll
+
+# Dependency directories
+/vendor/
+/go/pkg/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.code-workspace
+
+# Environment files
+.env
+.env.local
+.env*.local
+.env.development
+.env.test
+.env.production
+
+# AWS credentials and config
+.aws/
+*.pem
+*.key
+
+# Log files
+*.log
+logs/
+
+# Test coverage files
+coverage.out
+coverage.html
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Debug files
+debug
+*.debug
+
+# Build artifacts
+/dist/
+/build/
+*.a
+*.o
+
+# Go workspace file
+go.work
+
+# Terraform files (if used)
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# Docker files
+docker-compose.override.yml
+.dockerignore
+
+# Database files
+*.db
+*.sqlite
+/migrations/

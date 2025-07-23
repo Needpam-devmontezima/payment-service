@@ -1,0 +1,64 @@
+{
+  "family": "payment-service",
+  "executionRoleArn": "arn:aws:iam::061639167441:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "payment-service",
+      "image": "061639167441.dkr.ecr.us-east-2.amazonaws.com/needpam/payment-service:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/payment-service",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "environment": [
+        {
+          "name": "DB_HOST",
+          "value": "paymentdb.c5uem4s60ypi.us-east-2.rds.amazonaws.com"
+        },
+        {
+          "name": "DB_NAME",
+          "value": "postgres"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "value": "devpassword"
+        },
+        {
+          "name": "DB_PORT",
+          "value": "5432"
+        },
+        {
+          "name": "DB_USER",
+          "value": "payment_user"
+        },
+                {
+          "name": "SSL_MODE",
+          "value": "require"
+        },
+        {
+          "name": "STRIPE_SECRET_KEY",
+          "value": "sk_test_51RZtEhIohedrUkIbbyyDwDxwpnZaJa9gSx6Hl8agB1i6uYCuKCG0yKEhBQhtZJJbilsCYs5cisMWK5nDAmvSK5lq00XE29OOKY"
+        },
+        {
+          "name": "STRIPE_WEBHOOK_SECRET",
+          "value": "whsec_hsBJ8HOsgR4IAKQDxaxz308fSlLb08LU"
+        }
+      ]
+    }
+  ],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024"
+}

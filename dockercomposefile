@@ -1,0 +1,45 @@
+services:
+  payment-service:
+    image: payment-service:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - payment-db
+    environment:
+      - DB_HOST=payment-db
+      - DB_PORT=5432
+      - DB_NAME=payment_db
+      - DB_USER=payment_user
+      - DB_PASSWORD=devpassword
+      - STRIPE_SECRET_KEY=sk_test_51RZtEhIohedrUkIbbyyDwDxwpnZaJa9gSx6Hl8agB1i6uYCuKCG0yKEhBQhtZJJbilsCYs5cisMWK5nDAmvSK5lq00XE29OOKY
+      - STRIPE_WEBHOOK_SECRET=whsec_15710f1efb37f1e091d69977e3e799017e2132e6736a1da205b4183a74f75781
+    networks:
+      - payment-network
+
+  payment-db:
+    image: postgres:15-alpine
+    container_name: payment-db
+    environment:
+      - POSTGRES_USER=payment_user
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-devpassword}
+      - POSTGRES_DB=postgres
+    volumes:
+      - payment-data:/var/lib/postgresql/data
+      - ./deploy/db/postgresql.conf:/etc/postgresql/postgresql.conf
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payment_user -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - payment-network
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+
+volumes:
+  payment-data:
+
+networks:
+  payment-network:
+    driver: bridge
