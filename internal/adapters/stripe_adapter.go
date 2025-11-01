@@ -39,6 +39,11 @@ func (s *StripeAdapter) CreatePaymentIntent(ctx context.Context, req model.Payme
         Currency: stripe.String(req.Currency),
     }
     
+    // Include the payment method in the metadata
+	if req.PaymentMethod != "" {
+		params.PaymentMethodTypes = []*string{stripe.String(req.PaymentMethod)}
+	}
+    
     pi, err := paymentintent.New(params)
     if err != nil {
         return nil, errors.New("Payment creation failed #acpi0")

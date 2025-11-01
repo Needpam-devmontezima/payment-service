@@ -32,9 +32,17 @@ func (s *PaymentService) CreatePaymentIntent(ctx context.Context, provider model
 		return nil, err
 	}
 
-	// Add payment-processor-specific timeout (2 seconds)
-    ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+	// Add payment-processor-specific timeout (5 seconds)
+    ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
     defer cancel()
+
+	// Log the payment method being used
+	log.Printf("Creating payment intent using method: %s", req.PaymentMethod)
+
+	// Validate the payment method
+	if req.PaymentMethod == "" {
+		return nil, fmt.Errorf("payment method is required")
+	}
 
 	pi_response, err := processor.CreatePaymentIntent(ctx, req)
 	if err != nil {
@@ -83,7 +91,7 @@ func (s *PaymentService) ChargeClient(ctx context.Context, provider model.Paymen
 	}
 
 	// Add payment-processor-specific timeout (5 seconds)
-    ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+    ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
     defer cancel()
 
 	res, err := processor.ChargeClient(ctx, req)
@@ -142,8 +150,8 @@ func (s *PaymentService) GetPaymentIntent(ctx context.Context, provider model.Pa
 		return nil, err
 	}
 
-	// Add payment-processor-specific timeout (2 seconds)
-    ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+	// Add payment-processor-specific timeout (5 seconds)
+    ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
     defer cancel()
 
 	pi_response, err := processor.GetPaymentIntent(ctx, id)

@@ -13,6 +13,7 @@ type PaymentIntentRequest struct {
 	Token	   	string				`json:"token"`
 	RememberMe	*bool				`json:"remember_me"`
 	Metadata   	map[string]string	`json:"metadata"`
+	PaymentMethod string				`json:"payment_method"`
 }
 
 type PaymentIntentResponse struct {
